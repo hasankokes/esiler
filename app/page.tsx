@@ -19,9 +19,12 @@ export default function Home() {
   const [activeFilter, setActiveFilter] = useState("all");
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [apiProducts, setApiProducts] = useState<Product[]>([]);
+  const [categories, setCategories] = useState<{ value: string, label: string }[]>([]);
 
   useEffect(() => {
     setMounted(true);
+
+    // Fetch products
     fetch("/api/products")
       .then(res => res.json())
       .then(data => {
@@ -30,6 +33,16 @@ export default function Home() {
         }
       })
       .catch(err => console.error("Error fetching products:", err));
+
+    // Fetch categories
+    fetch("/api/categories")
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data)) {
+          setCategories(data);
+        }
+      })
+      .catch(err => console.error("Error fetching categories:", err));
   }, []);
 
   const filteredProducts = activeFilter === "all"
@@ -63,16 +76,25 @@ export default function Home() {
         </div>
 
         <div className="flex gap-2 flex-wrap mb-12">
-          {['all', 'penye', 'buyuk', 'hirka', 'badi'].map((cat) => (
+          <button
+            onClick={() => setActiveFilter("all")}
+            className={`px-5 py-2 border border-border text-[0.75rem] tracking-[0.1em] uppercase transition-all duration-300 ${activeFilter === "all"
+              ? 'bg-dark text-cream border-dark'
+              : 'bg-transparent text-light-text hover:bg-dark hover:text-cream hover:border-dark'
+              }`}
+          >
+            Tümü
+          </button>
+          {categories.map((cat) => (
             <button
-              key={cat}
-              onClick={() => setActiveFilter(cat)}
-              className={`px-5 py-2 border border-border text-[0.75rem] tracking-[0.1em] uppercase transition-all duration-300 ${activeFilter === cat
+              key={cat.value}
+              onClick={() => setActiveFilter(cat.value)}
+              className={`px-5 py-2 border border-border text-[0.75rem] tracking-[0.1em] uppercase transition-all duration-300 ${activeFilter === cat.value
                 ? 'bg-dark text-cream border-dark'
                 : 'bg-transparent text-light-text hover:bg-dark hover:text-cream hover:border-dark'
                 }`}
             >
-              {cat === 'all' ? 'Tümü' : cat === 'buyuk' ? 'Penye Büyük Beden' : cat === 'hirka' ? 'Hırka & Yelek' : cat}
+              {cat.label}
             </button>
           ))}
         </div>
