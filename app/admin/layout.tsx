@@ -20,7 +20,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             return;
         }
 
-        fetch("/api/auth/check")
+        setChecking(true);
+        fetch("/api/auth/check", { cache: "no-store" })
             .then((res) => {
                 if (!res.ok) {
                     router.push("/admin/login");
