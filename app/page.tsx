@@ -10,14 +10,24 @@ import AboutSection from "@/components/AboutSection";
 import ContactStrip from "@/components/ContactStrip";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { products, Product } from "@/data/products";
 import { motion } from "framer-motion";
+
+export type Product = {
+  id: number;
+  name: string;
+  cat: string;
+  catLabel: string;
+  fabric: string;
+  gram: string;
+  size: string;
+  colors: string[];
+};
 
 export default function Home() {
   const [mounted, setMounted] = useState(false);
   const [activeFilter, setActiveFilter] = useState("all");
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const [apiProducts, setApiProducts] = useState<Product[]>(products);
+  const [apiProducts, setApiProducts] = useState<Product[]>([]);
 
   useEffect(() => {
     setMounted(true);
