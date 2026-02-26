@@ -1,12 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
 
-export async function GET(req: NextRequest) {
-    const session = req.cookies.get("admin_session");
-    if (session?.value !== "authenticated") {
-        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
+export async function GET() {
     const { data: categories, error } = await supabase.from("categories").select("*").order("id", { ascending: true });
     if (error) {
         return NextResponse.json({ error: error.message }, { status: 500 });
