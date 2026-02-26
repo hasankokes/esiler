@@ -1,6 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import fs from "fs";
-import path from "path";
 
 export async function POST(req: NextRequest) {
     const session = req.cookies.get("admin_session");
@@ -111,7 +109,7 @@ export async function POST(req: NextRequest) {
             url: publicUrl,
             filename,
         });
-    } catch (err: any) {
+    } catch (err) {
         console.error("AI generation error:", err);
         return NextResponse.json(
             { error: "AI görsel oluşturma sırasında hata oluştu" },

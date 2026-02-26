@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
 
-export async function GET(req: NextRequest) {
+export async function GET() {
     const { data: products, error } = await supabase.from("products").select("*").order("id", { ascending: true });
     if (error) {
         return NextResponse.json({ error: error.message }, { status: 500 });

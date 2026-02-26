@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
         const ext = path.extname(file.name) || ".jpg";
         const filename = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}${ext}`;
 
-        const { data, error } = await supabase.storage.from("images").upload(filename, buffer, {
+        const { error } = await supabase.storage.from("images").upload(filename, buffer, {
             contentType: file.type || "image/jpeg",
             upsert: false
         });
@@ -38,7 +38,7 @@ export async function POST(req: NextRequest) {
             filename,
         });
 
-    } catch (err: any) {
+    } catch (err) {
         console.error("Upload error:", err);
         return NextResponse.json({ error: "Dosya yüklenemedi" }, { status: 500 });
     }

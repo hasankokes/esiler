@@ -8,7 +8,7 @@ export async function GET() {
             throw error;
         }
         return NextResponse.json({ success: true, messages });
-    } catch (error: any) {
+    } catch (error) {
         console.error('Messages fetch error:', error);
         return NextResponse.json(
             { success: false, error: 'Mesajlar getirilemedi' },
@@ -49,7 +49,7 @@ export async function POST(request: Request) {
             { success: true, message: 'Mesajınız başarıyla alındı' },
             { status: 201 }
         );
-    } catch (error: any) {
+    } catch (error) {
         console.error('Message create error:', error);
         return NextResponse.json(
             { success: false, error: 'Mesaj kaydedilemedi' },
@@ -77,7 +77,7 @@ export async function DELETE(request: Request) {
         }
 
         return NextResponse.json({ success: true, message: 'Mesaj silindi' });
-    } catch (error: any) {
+    } catch (error) {
         console.error('Message delete error:', error);
         return NextResponse.json(
             { success: false, error: 'Mesaj silinemedi' },
@@ -97,7 +97,7 @@ export async function PUT(request: Request) {
         if (error) throw error;
 
         return NextResponse.json({ success: true, message: data });
-    } catch (error: any) {
+    } catch {
         return NextResponse.json({ success: false, error: "Mesaj güncellenemedi" }, { status: 500 });
     }
 }

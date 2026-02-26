@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { Product } from "@/data/products";
+import { Product } from "@/types/product";
 import { useState } from "react";
 import Link from "next/link";
 import { X } from "lucide-react";
@@ -43,9 +43,17 @@ export default function ProductModal({ product, onClose }: { product: Product | 
                         >
                             <X size={20} />
                         </button>
-                        <svg width="70" height="90" viewBox="0 0 70 90" fill="none" className="opacity-30">
-                            <rect x="10" y="10" width="50" height="70" rx="4" stroke="#D4C5A9" strokeWidth="1.5" />
-                        </svg>
+                        {product.images?.[0] ? (
+                            <img
+                                src={product.images[0]}
+                                alt={product.name}
+                                className="w-full h-full object-cover relative z-10"
+                            />
+                        ) : (
+                            <svg width="70" height="90" viewBox="0 0 70 90" fill="none" className="opacity-30 relative z-10">
+                                <rect x="10" y="10" width="50" height="70" rx="4" stroke="#D4C5A9" strokeWidth="1.5" />
+                            </svg>
+                        )}
                     </div>
 
                     {/* Modal Content */}

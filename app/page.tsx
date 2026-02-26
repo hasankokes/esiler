@@ -12,16 +12,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { motion } from "framer-motion";
 
-export type Product = {
-  id: number;
-  name: string;
-  cat: string;
-  catLabel: string;
-  fabric: string;
-  gram: string;
-  size: string;
-  colors: string[];
-};
+import { Product } from "@/types/product";
 
 export default function Home() {
   const [mounted, setMounted] = useState(false);
