@@ -9,11 +9,22 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+        cream: "var(--cream)",
+        dark: "var(--dark)",
+        accent: "var(--accent)",
+        terra: "var(--terra)",
+        text: "var(--text)",
+        "light-text": "var(--light-text)",
+        border: "var(--border)",
+      },
+      fontFamily: {
+        cormorant: ["var(--font-cormorant)", "serif"],
+        sans: ["var(--font-dm-sans)", "sans-serif"],
+        mono: ["var(--font-dm-mono)", "monospace"],
       },
     },
   },
   plugins: [],
 };
+
 export default config;

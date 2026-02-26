@@ -1,101 +1,111 @@
-import Image from "next/image";
+"use client";
+
+import { useState, useEffect } from "react";
+import Hero from "@/components/Hero";
+import StatsBar from "@/components/StatsBar";
+import Categories from "@/components/Categories";
+import ProductCard from "@/components/ProductCard";
+import ProductModal from "@/components/ProductModal";
+import AboutSection from "@/components/AboutSection";
+import ContactStrip from "@/components/ContactStrip";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import { products, Product } from "@/data/products";
+import { motion } from "framer-motion";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [mounted, setMounted] = useState(false);
+  const [activeFilter, setActiveFilter] = useState("all");
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [apiProducts, setApiProducts] = useState<Product[]>(products);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  useEffect(() => {
+    setMounted(true);
+    fetch("/api/products")
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data)) {
+          setApiProducts(data);
+        }
+      })
+      .catch(err => console.error("Error fetching products:", err));
+  }, []);
+
+  const filteredProducts = activeFilter === "all"
+    ? apiProducts
+    : apiProducts.filter(p => p.cat === activeFilter);
+
+  if (!mounted) return null; // Avoid hydration mismatch
+
+  return (
+    <main className="min-h-screen bg-cream selection:bg-terra/30 selection:text-dark">
+      <Navbar />
+
+      <Hero />
+
+      <StatsBar />
+
+      <Categories onCategoryClick={setActiveFilter} />
+
+      {/* PRODUCTS SECTION */}
+      <section id="urunler" className="py-24 px-6 md:px-24">
+        <div className="flex flex-col md:flex-row items-start md:items-end justify-between mb-16 gap-6">
+          <div>
+            <div className="font-mono text-[0.65rem] tracking-[0.2em] uppercase text-terra flex items-center gap-4 mb-6
+              before:content-[''] before:w-10 before:h-[1px] before:bg-terra before:inline-block">
+              Ürün Kataloğu
+            </div>
+            <h2 className="font-cormorant text-4xl md:text-[4rem] font-light text-dark leading-[1.15]">
+              Koleksiyondan<br />Seçmeler
+            </h2>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+
+        <div className="flex gap-2 flex-wrap mb-12">
+          {['all', 'penye', 'buyuk', 'hirka', 'badi'].map((cat) => (
+            <button
+              key={cat}
+              onClick={() => setActiveFilter(cat)}
+              className={`px-5 py-2 border border-border text-[0.75rem] tracking-[0.1em] uppercase transition-all duration-300 ${activeFilter === cat
+                ? 'bg-dark text-cream border-dark'
+                : 'bg-transparent text-light-text hover:bg-dark hover:text-cream hover:border-dark'
+                }`}
+            >
+              {cat === 'all' ? 'Tümü' : cat === 'buyuk' ? 'Penye Büyük Beden' : cat === 'hirka' ? 'Hırka & Yelek' : cat}
+            </button>
+          ))}
+        </div>
+
+        <motion.div
+          key={activeFilter}
+          initial="hidden"
+          animate="visible"
+          variants={{
+            visible: { transition: { staggerChildren: 0.1 } },
+            hidden: {}
+          }}
+          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8"
         >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+          {filteredProducts.map(product => (
+            <ProductCard
+              key={product.id}
+              product={product}
+              onClick={() => setSelectedProduct(product)}
+            />
+          ))}
+        </motion.div>
+      </section>
+
+      <AboutSection />
+
+      <ContactStrip />
+
+      <Footer />
+
+      <ProductModal
+        product={selectedProduct}
+        onClose={() => setSelectedProduct(null)}
+      />
+    </main>
   );
 }

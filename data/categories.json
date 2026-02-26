@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "value": "penye",
+    "label": "Penye",
+    "description": "Penye tişört ve üst giyim"
+  },
+  {
+    "id": 2,
+    "value": "buyuk",
+    "label": "Penye Büyük Beden",
+    "description": "Büyük beden penye ürünler"
+  },
+  {
+    "id": 3,
+    "value": "hirka",
+    "label": "Hırka & Yelek",
+    "description": "Triko hırka ve yelek modelleri"
+  },
+  {
+    "id": 4,
+    "value": "badi",
+    "label": "Badi",
+    "description": "Badi ve sweatshirt modelleri"
+  }
+]
