@@ -12,12 +12,17 @@ function CountUp({ target, duration = 1.5 }: { target: number; duration?: number
         if (isInView) {
             let start = 0;
             const end = target;
-            const stepTime = Math.abs(Math.floor((duration * 1000) / end));
+            const stepTime = 16;
+            const increment = Math.max(1, Math.ceil(end / ((duration * 1000) / stepTime)));
 
             const timer = setInterval(() => {
-                start += 1;
-                setCount(start);
-                if (start === end) clearInterval(timer);
+                start += increment;
+                if (start >= end) {
+                    setCount(end);
+                    clearInterval(timer);
+                } else {
+                    setCount(start);
+                }
             }, stepTime);
 
             return () => clearInterval(timer);
@@ -54,7 +59,7 @@ export default function StatsBar() {
             </div>
             <div className="text-center">
                 <span className="font-cormorant text-4xl md:text-[2.5rem] font-light text-dark block">
-                    <CountUp target={30} />
+                    <CountUp target={12} duration={0.8} />
                 </span>
                 <span className="text-[0.7rem] tracking-[0.15em] uppercase text-light-text font-mono">
                     Renk Seçeneği
@@ -62,7 +67,7 @@ export default function StatsBar() {
             </div>
             <div className="text-center">
                 <span className="font-cormorant text-4xl md:text-[2.5rem] font-light text-dark block">
-                    <CountUp target={500} />
+                    <CountUp target={1000} duration={2} />
                 </span>
                 <span className="text-[0.7rem] tracking-[0.15em] uppercase text-light-text font-mono">
                     Güvenilen Müşteri

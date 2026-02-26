@@ -23,10 +23,10 @@ export default function Hero() {
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.9, delay: 0.7 }}
-                    className="font-cormorant text-5xl md:text-7xl lg:text-[5.5rem] font-light leading-[1.1] text-dark mb-8"
+                    className="font-cormorant text-4xl sm:text-5xl md:text-7xl lg:text-[5.5rem] font-light leading-[1.1] text-dark mb-8"
                 >
                     1964&apos;ten Beri<br />
-                    <em className="italic text-terra">Türk Dokusunun</em><br />
+                    <em className="italic text-terra whitespace-nowrap">Türk Dokusunun</em><br />
                     Güvenilir Sesi
                 </motion.h1>
 

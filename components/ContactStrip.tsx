@@ -86,7 +86,7 @@ export default function ContactStrip() {
                     </a>
 
                     <a
-                        href="https://wa.me/902125206825"
+                        href="https://wa.me/905327710688"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="w-full md:w-[220px] text-center px-8 py-4 border-[1.5px] border-[#25D366] text-[#25D366] text-[0.75rem] tracking-[0.15em] uppercase font-medium relative overflow-hidden group hover:text-white transition-colors duration-400"
