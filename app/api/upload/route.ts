@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
         const ext = file.name.substring(file.name.lastIndexOf('.')) || ".jpg";
         const filename = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}${ext}`;
 
-        const { data, error } = await supabase.storage.from("images").upload(filename, file, {
+        const { error } = await supabase.storage.from("images").upload(filename, file, {
             contentType: file.type || "image/jpeg",
             upsert: false
         });
