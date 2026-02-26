@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { supabase } from "@/lib/supabase";
 
 export async function GET(req: NextRequest) {
     const session = req.cookies.get("admin_session");
@@ -6,8 +7,11 @@ export async function GET(req: NextRequest) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { readCategories } = await import("@/lib/categories-store");
-    return NextResponse.json(readCategories());
+    const { data: categories, error } = await supabase.from("categories").select("*").order("id", { ascending: true });
+    if (error) {
+        return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+    return NextResponse.json(categories);
 }
 
 export async function POST(req: NextRequest) {
@@ -17,21 +21,19 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json();
-    const { readCategories, writeCategories } = await import("@/lib/categories-store");
-    const categories = readCategories();
-
     const newCat = {
         id: Date.now(),
         value: body.value || body.label.toLowerCase().replace(/[^a-z0-9]/g, ""),
         label: body.label,
-        description: body.description || "",
-        createdAt: new Date().toISOString(),
+        description: body.description || ""
     };
 
-    categories.push(newCat);
-    writeCategories(categories);
+    const { data, error } = await supabase.from("categories").insert([newCat]).select().single();
 
-    return NextResponse.json(newCat, { status: 201 });
+    if (error) {
+        return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+    return NextResponse.json(data, { status: 201 });
 }
 
 export async function PUT(req: NextRequest) {
@@ -41,18 +43,16 @@ export async function PUT(req: NextRequest) {
     }
 
     const body = await req.json();
-    const { readCategories, writeCategories } = await import("@/lib/categories-store");
-    const categories = readCategories();
-
-    const index = categories.findIndex((c: { id: number }) => c.id === body.id);
-    if (index === -1) {
-        return NextResponse.json({ error: "Kategori bulunamadı" }, { status: 404 });
+    if (!body.id) {
+        return NextResponse.json({ error: "ID required" }, { status: 400 });
     }
 
-    categories[index] = { ...categories[index], ...body };
-    writeCategories(categories);
+    const { data, error } = await supabase.from("categories").update(body).eq("id", body.id).select().single();
 
-    return NextResponse.json(categories[index]);
+    if (error) {
+        return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+    return NextResponse.json(data);
 }
 
 export async function DELETE(req: NextRequest) {
@@ -64,14 +64,14 @@ export async function DELETE(req: NextRequest) {
     const { searchParams } = new URL(req.url);
     const id = Number(searchParams.get("id"));
 
-    const { readCategories, writeCategories } = await import("@/lib/categories-store");
-    const categories = readCategories();
-    const filtered = categories.filter((c: { id: number }) => c.id !== id);
-
-    if (filtered.length === categories.length) {
-        return NextResponse.json({ error: "Kategori bulunamadı" }, { status: 404 });
+    if (!id) {
+        return NextResponse.json({ error: "ID required" }, { status: 400 });
     }
 
-    writeCategories(filtered);
+    const { error } = await supabase.from("categories").delete().eq("id", id);
+    if (error) {
+        return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+
     return NextResponse.json({ success: true });
 }

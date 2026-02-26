@@ -12,8 +12,9 @@ export async function POST(req: NextRequest) {
         const { prompt, referenceImage } = await req.json();
 
         // Read API key from settings
-        const { readSettings } = await import("@/lib/settings-store");
-        const settings = readSettings();
+        const { supabase } = await import("@/lib/supabase");
+        const { data: settingsRow } = await supabase.from('settings').select('data').eq('id', 'site_settings').single();
+        const settings = settingsRow?.data || {};
 
         if (!settings.geminiApiKey) {
             return NextResponse.json(
@@ -90,24 +91,27 @@ export async function POST(req: NextRequest) {
             );
         }
 
-        // Save the generated image
-        const uploadDir = path.join(process.cwd(), "public", "uploads");
-        if (!fs.existsSync(uploadDir)) {
-            fs.mkdirSync(uploadDir, { recursive: true });
-        }
-
         const ext = imagePart.inlineData.mimeType?.includes("png") ? ".png" : ".jpg";
         const filename = `ai-${Date.now()}${ext}`;
-        const filepath = path.join(uploadDir, filename);
 
         const imageBuffer = Buffer.from(imagePart.inlineData.data, "base64");
-        fs.writeFileSync(filepath, imageBuffer);
+
+        const { error: uploadError } = await supabase.storage.from("images").upload(filename, imageBuffer, {
+            contentType: imagePart.inlineData.mimeType || "image/jpeg",
+            upsert: false
+        });
+
+        if (uploadError) {
+            throw uploadError;
+        }
+
+        const { data: { publicUrl } } = supabase.storage.from("images").getPublicUrl(filename);
 
         return NextResponse.json({
-            url: `/uploads/${filename}`,
+            url: publicUrl,
             filename,
         });
-    } catch (err) {
+    } catch (err: any) {
         console.error("AI generation error:", err);
         return NextResponse.json(
             { error: "AI görsel oluşturma sırasında hata oluştu" },

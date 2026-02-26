@@ -1,39 +1,14 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
-
-const dataFilePath = path.join(process.cwd(), 'data/messages.json');
-
-// Helper to read data
-const readData = () => {
-    try {
-        if (!fs.existsSync(dataFilePath)) {
-            return [];
-        }
-        const jsonData = fs.readFileSync(dataFilePath, 'utf8');
-        return JSON.parse(jsonData);
-    } catch (error) {
-        console.error('Veri okuma hatası:', error);
-        return [];
-    }
-};
-
-// Helper to write data
-const writeData = (data: unknown) => {
-    try {
-        fs.writeFileSync(dataFilePath, JSON.stringify(data, null, 2), 'utf8');
-        return true;
-    } catch (error) {
-        console.error('Veri yazma hatası:', error);
-        return false;
-    }
-};
+import { supabase } from '@/lib/supabase';
 
 export async function GET() {
     try {
-        const messages = readData();
+        const { data: messages, error } = await supabase.from('messages').select('*').order('createdAt', { ascending: false });
+        if (error) {
+            throw error;
+        }
         return NextResponse.json({ success: true, messages });
-    } catch (error) {
+    } catch (error: any) {
         console.error('Messages fetch error:', error);
         return NextResponse.json(
             { success: false, error: 'Mesajlar getirilemedi' },
@@ -55,9 +30,7 @@ export async function POST(request: Request) {
             );
         }
 
-        const messages = readData();
         const newMessage = {
-            id: Date.now().toString(),
             name,
             company: company || '',
             email,
@@ -66,17 +39,17 @@ export async function POST(request: Request) {
             isRead: false
         };
 
-        messages.push(newMessage);
+        const { error } = await supabase.from('messages').insert([newMessage]);
 
-        if (writeData(messages)) {
-            return NextResponse.json(
-                { success: true, message: 'Mesajınız başarıyla alındı' },
-                { status: 201 }
-            );
-        } else {
-            throw new Error('Dosyaya yazılamadı');
+        if (error) {
+            throw error;
         }
-    } catch (error) {
+
+        return NextResponse.json(
+            { success: true, message: 'Mesajınız başarıyla alındı' },
+            { status: 201 }
+        );
+    } catch (error: any) {
         console.error('Message create error:', error);
         return NextResponse.json(
             { success: false, error: 'Mesaj kaydedilemedi' },
@@ -97,27 +70,34 @@ export async function DELETE(request: Request) {
             );
         }
 
-        let messages = readData();
-        const initialLength = messages.length;
-        messages = messages.filter((msg: { id: string }) => msg.id !== id);
+        const { error } = await supabase.from('messages').delete().eq('id', id);
 
-        if (messages.length === initialLength) {
-            return NextResponse.json(
-                { success: false, error: 'Mesaj bulunamadı' },
-                { status: 404 }
-            );
+        if (error) {
+            throw error;
         }
 
-        if (writeData(messages)) {
-            return NextResponse.json({ success: true, message: 'Mesaj silindi' });
-        } else {
-            throw new Error('Dosyaya yazılamadı');
-        }
-    } catch (error) {
+        return NextResponse.json({ success: true, message: 'Mesaj silindi' });
+    } catch (error: any) {
         console.error('Message delete error:', error);
         return NextResponse.json(
             { success: false, error: 'Mesaj silinemedi' },
             { status: 500 }
         );
+    }
+}
+
+export async function PUT(request: Request) {
+    try {
+        const body = await request.json();
+        if (!body.id) {
+            return NextResponse.json({ error: "ID required" }, { status: 400 });
+        }
+
+        const { data, error } = await supabase.from('messages').update(body).eq('id', body.id).select().single();
+        if (error) throw error;
+
+        return NextResponse.json({ success: true, message: data });
+    } catch (error: any) {
+        return NextResponse.json({ success: false, error: "Mesaj güncellenemedi" }, { status: 500 });
     }
 }
