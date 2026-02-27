@@ -75,10 +75,10 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="flex gap-2 flex-wrap mb-12">
+        <div className="flex gap-2 flex-nowrap overflow-x-auto md:flex-wrap mb-12 pb-2 scrollbar-none snap-x" style={{ msOverflowStyle: 'none', scrollbarWidth: 'none' }}>
           <button
             onClick={() => setActiveFilter("all")}
-            className={`px-5 py-2 border border-border text-[0.75rem] tracking-[0.1em] uppercase transition-all duration-300 ${activeFilter === "all"
+            className={`px-5 py-2 whitespace-nowrap snap-start border border-border text-[0.75rem] tracking-[0.1em] uppercase transition-all duration-300 ${activeFilter === "all"
               ? 'bg-dark text-cream border-dark'
               : 'bg-transparent text-light-text hover:bg-dark hover:text-cream hover:border-dark'
               }`}
@@ -89,7 +89,7 @@ export default function Home() {
             <button
               key={cat.value}
               onClick={() => setActiveFilter(cat.value)}
-              className={`px-5 py-2 border border-border text-[0.75rem] tracking-[0.1em] uppercase transition-all duration-300 ${activeFilter === cat.value
+              className={`px-5 py-2 whitespace-nowrap snap-start border border-border text-[0.75rem] tracking-[0.1em] uppercase transition-all duration-300 ${activeFilter === cat.value
                 ? 'bg-dark text-cream border-dark'
                 : 'bg-transparent text-light-text hover:bg-dark hover:text-cream hover:border-dark'
                 }`}

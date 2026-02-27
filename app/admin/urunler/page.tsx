@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Plus, Edit, Trash2, Eye, EyeOff, Package } from "lucide-react";
+import { PRODUCT_COLORS } from "@/lib/colors";
+import { ProductImage } from "@/types/product";
 
 type AdminProduct = {
     id: number;
@@ -14,7 +16,7 @@ type AdminProduct = {
     size: string;
     colors: string[];
     minOrder?: string;
-    images?: string[];
+    images?: ProductImage[];
     status?: string;
 };
 
@@ -64,6 +66,8 @@ export default function AdminProducts() {
         hirka: "Hırka & Yelek",
         badi: "Badi",
     };
+
+    const getHex = (colorName: string) => PRODUCT_COLORS.find(c => c.name === colorName)?.hex || colorName;
 
     if (loading) {
         return (
@@ -136,7 +140,11 @@ export default function AdminProducts() {
                                         <div className="flex items-center gap-3">
                                             {p.images && p.images.length > 0 ? (
                                                 <div className="w-10 h-10 bg-white/5 border border-[#D4C5A9]/10 overflow-hidden flex-shrink-0">
-                                                    <img src={p.images[0]} alt="" className="w-full h-full object-cover" />
+                                                    <img
+                                                        src={typeof p.images[0] === 'string' ? p.images[0] : p.images[0].url}
+                                                        alt=""
+                                                        className="w-full h-full object-cover"
+                                                    />
                                                 </div>
                                             ) : (
                                                 <div className="w-10 h-10 bg-white/5 border border-[#D4C5A9]/10 flex items-center justify-center flex-shrink-0">
@@ -163,7 +171,8 @@ export default function AdminProducts() {
                                                 <div
                                                     key={i}
                                                     className="w-4 h-4 rounded-full border border-[#D4C5A9]/20"
-                                                    style={{ background: c }}
+                                                    style={{ background: getHex(c) }}
+                                                    title={c}
                                                 />
                                             ))}
                                             {p.colors && p.colors.length > 5 && (

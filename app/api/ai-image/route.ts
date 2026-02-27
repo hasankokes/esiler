@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
         }
 
         // Call Gemini API for image generation
-        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key=${settings.geminiApiKey}`;
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${settings.geminiApiKey}`;
 
         const response = await fetch(apiUrl, {
             method: "POST",

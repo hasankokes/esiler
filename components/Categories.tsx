@@ -58,16 +58,16 @@ export default function Categories({ onCategoryClick }: { onCategoryClick: (cat:
                     className="relative bg-[#243344] overflow-hidden cursor-pointer aspect-[3/4] group
             before:content-[''] before:absolute before:inset-0 before:bg-gradient-to-t before:from-[#1c2b3a]/90 before:to-transparent before:z-[1] hover:before:opacity-50 before:transition-opacity before:duration-400"
                 >
-                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[#2a3f52] to-[#1a2d3e] group-hover:scale-105 transition-transform duration-700 ease-out">
-                        <svg width="60" height="80" viewBox="0 0 60 80" fill="none" className="opacity-40">
+                    <div className="w-full h-full flex items-center justify-center pb-12 md:pb-4 bg-gradient-to-br from-[#2a3f52] to-[#1a2d3e] group-hover:scale-105 transition-transform duration-700 ease-out">
+                        <svg width="60" height="80" viewBox="0 0 60 80" fill="none" className="opacity-40 -translate-y-4">
                             <path d="M10 20 L5 10 L20 5 L30 15 L40 5 L55 10 L50 20 L45 20 L45 75 L15 75 L15 20Z" stroke="#D4C5A9" strokeWidth="1.5" fill="none" />
                             <path d="M5 10 Q3 25 8 40" stroke="#D4C5A9" strokeWidth="1" fill="none" />
                             <path d="M55 10 Q57 25 52 40" stroke="#D4C5A9" strokeWidth="1" fill="none" />
                         </svg>
                     </div>
-                    <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 z-[2]">
-                        <span className="font-cormorant text-2xl md:text-3xl font-light text-cream block mb-2">Penye</span>
-                        <span className="font-mono text-[0.65rem] tracking-[0.15em] text-accent">10 Renk Seçeneği</span>
+                    <div className="absolute bottom-0 left-0 right-0 p-5 md:p-8 z-[2]">
+                        <span className="font-cormorant text-2xl md:text-3xl font-light text-cream block mb-1">Penye</span>
+                        <span className="font-mono text-[0.6rem] md:text-[0.65rem] tracking-[0.15em] text-accent whitespace-nowrap">10 Renk · M-L-XL</span>
                     </div>
                     <div className="absolute top-6 right-6 w-9 h-9 border border-[#D4C5A9]/30 flex items-center justify-center z-[2] opacity-0 -translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 text-accent">
                         →
@@ -84,15 +84,15 @@ export default function Categories({ onCategoryClick }: { onCategoryClick: (cat:
                     className="relative bg-[#243344] overflow-hidden cursor-pointer aspect-[3/4] group
             before:content-[''] before:absolute before:inset-0 before:bg-gradient-to-t before:from-[#1c2b3a]/90 before:to-transparent before:z-[1] hover:before:opacity-50 before:transition-opacity before:duration-400"
                 >
-                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[#3a3040] to-[#2a2035] group-hover:scale-105 transition-transform duration-700 ease-out">
-                        <svg width="70" height="80" viewBox="0 0 70 80" fill="none" className="opacity-40">
+                    <div className="w-full h-full flex items-center justify-center pb-12 md:pb-4 bg-gradient-to-br from-[#3a3040] to-[#2a2035] group-hover:scale-105 transition-transform duration-700 ease-out">
+                        <svg width="70" height="80" viewBox="0 0 70 80" fill="none" className="opacity-40 -translate-y-4">
                             <path d="M10 20 L3 10 L20 5 L35 18 L50 5 L67 10 L60 20 L55 20 L55 75 L15 75 L15 20Z" stroke="#D4C5A9" strokeWidth="1.5" fill="none" />
                             <circle cx="35" cy="47" r="12" stroke="#D4C5A9" strokeWidth="1" fill="none" />
                         </svg>
                     </div>
-                    <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 z-[2]">
-                        <span className="font-cormorant text-2xl md:text-3xl font-light text-cream block mb-2 leading-tight">Penye<br />Büyük Beden</span>
-                        <span className="font-mono text-[0.65rem] tracking-[0.15em] text-accent">2XL — 6XL · 10 Renk</span>
+                    <div className="absolute bottom-0 left-0 right-0 p-5 md:p-8 z-[2]">
+                        <span className="font-cormorant text-2xl md:text-3xl font-light text-cream block mb-1 leading-tight">Büyük Beden</span>
+                        <span className="font-mono text-[0.55rem] sm:text-[0.6rem] md:text-[0.65rem] tracking-[0.1em] sm:tracking-[0.15em] text-accent whitespace-nowrap">10 Renk · 2XL-3XL-4XL</span>
                     </div>
                     <div className="absolute top-6 right-6 w-9 h-9 border border-[#D4C5A9]/30 flex items-center justify-center z-[2] opacity-0 -translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 text-accent">
                         →
@@ -109,16 +109,16 @@ export default function Categories({ onCategoryClick }: { onCategoryClick: (cat:
                     className="relative bg-[#243344] overflow-hidden cursor-pointer aspect-[3/4] group
             before:content-[''] before:absolute before:inset-0 before:bg-gradient-to-t before:from-[#1c2b3a]/90 before:to-transparent before:z-[1] hover:before:opacity-50 before:transition-opacity before:duration-400"
                 >
-                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[#3d3530] to-[#2d2520] group-hover:scale-105 transition-transform duration-700 ease-out">
-                        <svg width="65" height="80" viewBox="0 0 65 80" fill="none" className="opacity-40">
+                    <div className="w-full h-full flex items-center justify-center pb-12 md:pb-4 bg-gradient-to-br from-[#3d3530] to-[#2d2520] group-hover:scale-105 transition-transform duration-700 ease-out">
+                        <svg width="65" height="80" viewBox="0 0 65 80" fill="none" className="opacity-40 -translate-y-4">
                             <path d="M5 10 L15 5 L32 20 L50 5 L60 10 L55 25 L45 20 L45 75 L20 75 L20 20 L10 25Z" stroke="#D4C5A9" strokeWidth="1.5" fill="none" />
                             <path d="M32 20 L32 75" stroke="#D4C5A9" strokeWidth="1" strokeDasharray="3,3" />
                             <path d="M28 35 L36 35 M28 42 L36 42 M28 49 L36 49" stroke="#D4C5A9" strokeWidth="1" />
                         </svg>
                     </div>
-                    <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 z-[2]">
-                        <span className="font-cormorant text-2xl md:text-3xl font-light text-cream block mb-2 leading-tight">Hırka &<br />Yelek</span>
-                        <span className="font-mono text-[0.65rem] tracking-[0.15em] text-accent">7 Renk · Sezonluk</span>
+                    <div className="absolute bottom-0 left-0 right-0 p-5 md:p-8 z-[2]">
+                        <span className="font-cormorant text-[1.35rem] sm:text-2xl md:text-3xl font-light text-cream block mb-1 leading-tight whitespace-nowrap">Hırka & Yelek</span>
+                        <span className="font-mono text-[0.6rem] md:text-[0.65rem] tracking-[0.15em] text-accent whitespace-nowrap">7 Renk · 1-2-3-4</span>
                     </div>
                     <div className="absolute top-6 right-6 w-9 h-9 border border-[#D4C5A9]/30 flex items-center justify-center z-[2] opacity-0 -translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 text-accent">
                         →
@@ -135,15 +135,15 @@ export default function Categories({ onCategoryClick }: { onCategoryClick: (cat:
                     className="relative bg-[#243344] overflow-hidden cursor-pointer aspect-[3/4] group
             before:content-[''] before:absolute before:inset-0 before:bg-gradient-to-t before:from-[#1c2b3a]/90 before:to-transparent before:z-[1] hover:before:opacity-50 before:transition-opacity before:duration-400"
                 >
-                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[#2e3d35] to-[#1e2d25] group-hover:scale-105 transition-transform duration-700 ease-out">
-                        <svg width="55" height="80" viewBox="0 0 55 80" fill="none" className="opacity-40">
+                    <div className="w-full h-full flex items-center justify-center pb-12 md:pb-4 bg-gradient-to-br from-[#2e3d35] to-[#1e2d25] group-hover:scale-105 transition-transform duration-700 ease-out">
+                        <svg width="55" height="80" viewBox="0 0 55 80" fill="none" className="opacity-40 -translate-y-4">
                             <path d="M15 10 Q5 10 5 20 L5 75 L50 75 L50 20 Q50 10 40 10 L37 10 Q35 18 27 18 Q19 18 18 10Z" stroke="#D4C5A9" strokeWidth="1.5" fill="none" />
                             <path d="M18 10 Q20 5 27 5 Q34 5 37 10" stroke="#D4C5A9" strokeWidth="1" fill="none" />
                         </svg>
                     </div>
-                    <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8 z-[2]">
-                        <span className="font-cormorant text-2xl md:text-3xl font-light text-cream block mb-2">Badi</span>
-                        <span className="font-mono text-[0.65rem] tracking-[0.15em] text-accent">6 Renk Seçeneği</span>
+                    <div className="absolute bottom-0 left-0 right-0 p-5 md:p-8 z-[2]">
+                        <span className="font-cormorant text-2xl md:text-3xl font-light text-cream block mb-1">Badi</span>
+                        <span className="font-mono text-[0.55rem] sm:text-[0.6rem] md:text-[0.65rem] tracking-[0.1em] sm:tracking-[0.15em] text-accent whitespace-nowrap">6 Renk · S-M-L-XL</span>
                     </div>
                     <div className="absolute top-6 right-6 w-9 h-9 border border-[#D4C5A9]/30 flex items-center justify-center z-[2] opacity-0 -translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 text-accent">
                         →
