@@ -16,14 +16,14 @@ export default function AboutSection() {
           before:content-[''] before:w-10 before:h-[1px] before:bg-terra before:inline-block">
                     Biz Kimiz
                 </div>
-                <div className="font-cormorant text-[6rem] md:text-[8rem] lg:text-[10rem] font-light text-[#1c2b3a]/5 leading-none -mb-8 -ml-2 select-none relative z-0">
+                <div className="font-cormorant italic text-[6rem] md:text-[8rem] lg:text-[10rem] font-light text-[#1c2b3a]/5 leading-none -mb-8 -ml-2 select-none relative z-0">
                     1964
                 </div>
                 <h2 className="font-cormorant text-4xl md:text-5xl font-light text-dark leading-[1.15] relative z-10 mb-8">
                     Altmış Yıllık<br />Bir Aile Mirası
                 </h2>
                 <p className="text-[1rem] leading-[1.9] text-text mb-12">
-                    İstanbul&apos;un tekstil kalbinde, 1964 yılında kurulan Eşiler Triko; penye ve
+                    İstanbul&apos;un tekstil kalbinde, <span className="italic">1964</span> yılında kurulan Eşiler Triko; penye ve
                     triko üretiminde altmış yılı aşkın deneyimiyle Türkiye&apos;nin en köklü toptan
                     giyim firmalarından biri olarak hizmet vermektedir.
                     <br /><br />

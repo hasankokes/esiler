@@ -16,7 +16,7 @@ export default function Hero() {
                     transition={{ duration: 0.8, delay: 0.5 }}
                     className="font-mono text-[0.7rem] tracking-[0.2em] text-terra uppercase mb-6"
                 >
-                    ✦ İstanbul · Türkiye · Est. 1964
+                    ✦ İstanbul · Türkiye · Est. <span className="italic">1964</span>
                 </motion.div>
 
                 <motion.h1
@@ -25,7 +25,7 @@ export default function Hero() {
                     transition={{ duration: 0.9, delay: 0.7 }}
                     className="font-cormorant text-4xl sm:text-5xl md:text-7xl lg:text-[5.5rem] font-light leading-[1.1] text-dark mb-8"
                 >
-                    1964&apos;ten Beri<br />
+                    <span className="italic">1964</span>&apos;ten Beri<br />
                     <em className="italic text-terra whitespace-nowrap">Türk Dokusunun</em><br />
                     Güvenilir Sesi
                 </motion.h1>
@@ -62,7 +62,7 @@ export default function Hero() {
                 {/* Fabric pattern overlay */}
                 <div className="absolute inset-0 opacity-20" style={{ backgroundImage: "repeating-linear-gradient(45deg, rgba(212,197,169,0.15) 0px, rgba(212,197,169,0.15) 1px, transparent 1px, transparent 10px)" }}></div>
 
-                <div className="font-cormorant text-[8rem] md:text-[16rem] font-light text-[#D4C5A9]/[0.05] absolute -bottom-8 md:-bottom-12 -right-4 md:-right-8 leading-none select-none pointer-events-none z-0">
+                <div className="font-cormorant italic text-[8rem] md:text-[16rem] font-light text-[#D4C5A9]/[0.05] absolute -bottom-8 md:-bottom-12 -right-4 md:-right-8 leading-none select-none pointer-events-none z-0">
                     1964
                 </div>
 

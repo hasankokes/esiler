@@ -35,7 +35,7 @@ export default function Footer() {
                 </a>
             </div>
             <div className="text-[0.75rem] text-light-text font-mono">
-                © {new Date().getFullYear()} Eşiler Triko — Est. 1964
+                © {new Date().getFullYear()} Eşiler Triko — Est. <span className="italic">1964</span>
             </div>
         </footer>
     );
