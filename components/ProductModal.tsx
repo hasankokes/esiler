@@ -5,11 +5,23 @@ import { Product } from "@/types/product";
 import { useState } from "react";
 import Link from "next/link";
 import { X } from "lucide-react";
+import { PRODUCT_COLORS } from "@/lib/colors";
 
 export default function ProductModal({ product, onClose }: { product: Product | null, onClose: () => void }) {
-    const [selectedColor, setSelectedColor] = useState(0);
+    const [selectedColorIndex, setSelectedColorIndex] = useState(0);
 
     if (!product) return null;
+
+    const selectedColorName = product.colors[selectedColorIndex];
+    const displayImage = product.images?.find(img =>
+        typeof img !== 'string' && img.color === selectedColorName
+    ) || product.images?.[0];
+
+    const displayImageUrl = typeof displayImage === 'string' ? displayImage : displayImage?.url;
+
+    const getHex = (colorName: string) => PRODUCT_COLORS.find(c => c.name === colorName)?.hex || colorName;
+    const color0 = getHex(product.colors[0] || '#2A3A4A');
+    const color1 = getHex(product.colors[1] || '#1C2B3A');
 
     return (
         <AnimatePresence>
@@ -35,7 +47,7 @@ export default function ProductModal({ product, onClose }: { product: Product | 
                     {/* Modal Image */}
                     <div
                         className="min-h-[250px] md:min-h-[400px] flex items-center justify-center sticky top-0 md:static"
-                        style={{ background: `linear-gradient(135deg, ${product.colors[1] || '#1C2B3A'}, ${product.colors[0] || '#2A3A4A'})` }}
+                        style={{ background: `linear-gradient(135deg, ${color1}, ${color0})` }}
                     >
                         <button
                             className="absolute top-4 right-4 bg-[#f5f0e8]/10 border-none w-10 h-10 flex items-center justify-center text-cream hover:bg-[#f5f0e8]/20 transition-colors z-20"
@@ -43,11 +55,11 @@ export default function ProductModal({ product, onClose }: { product: Product | 
                         >
                             <X size={20} />
                         </button>
-                        {product.images?.[0] ? (
+                        {displayImageUrl ? (
                             <img
-                                src={product.images[0]}
+                                src={displayImageUrl}
                                 alt={product.name}
-                                className="w-full h-full object-cover relative z-10"
+                                className="w-full h-full object-cover relative z-10 transition-opacity duration-300"
                             />
                         ) : (
                             <svg width="70" height="90" viewBox="0 0 70 90" fill="none" className="opacity-30 relative z-10">
@@ -88,10 +100,11 @@ export default function ProductModal({ product, onClose }: { product: Product | 
                                 {product.colors.map((c, i) => (
                                     <div
                                         key={i}
-                                        onClick={() => setSelectedColor(i)}
-                                        className={`w-7 h-7 rounded-full cursor-pointer border-2 transition-all duration-200 ${selectedColor === i ? 'border-dark scale-110' : 'border-transparent hover:scale-110'
+                                        onClick={() => setSelectedColorIndex(i)}
+                                        className={`w-7 h-7 rounded-full cursor-pointer border-2 transition-all duration-200 ${selectedColorIndex === i ? 'border-dark scale-110' : 'border-transparent hover:scale-110'
                                             }`}
-                                        style={{ background: c }}
+                                        style={{ background: getHex(c) }}
+                                        title={c}
                                     />
                                 ))}
                             </div>

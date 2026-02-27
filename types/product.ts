@@ -1,3 +1,5 @@
+export type ProductImage = string | { url: string; color?: string };
+
 export type Product = {
     id: number;
     name: string;
@@ -7,7 +9,7 @@ export type Product = {
     gram: string;
     size: string;
     colors: string[];
-    images?: string[];
+    images?: ProductImage[];
     status?: string;
     minOrder?: string;
 };

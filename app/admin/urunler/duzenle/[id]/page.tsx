@@ -3,6 +3,8 @@
 import { useState, useEffect, useRef } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { X, Plus, Upload, Sparkles, Loader2, Image as ImageIcon } from "lucide-react";
+import { PRODUCT_COLORS } from "@/lib/colors";
+import { ProductImage } from "@/types/product";
 
 type CategoryOption = { value: string; label: string };
 
@@ -26,10 +28,10 @@ export default function EditProduct() {
         size: "",
         minOrder: "",
         colors: [] as string[],
-        images: [] as string[],
+        images: [] as ProductImage[],
         status: "active",
     });
-    const [newColor, setNewColor] = useState("#1C2B3A");
+    const [newColor, setNewColor] = useState("");
     const [uploading, setUploading] = useState(false);
     const [aiGenerating, setAiGenerating] = useState(false);
     const [aiPrompt, setAiPrompt] = useState("");
@@ -77,7 +79,7 @@ export default function EditProduct() {
             const res = await fetch("/api/upload", { method: "POST", body: formData });
             const data = await res.json();
             if (res.ok && data.url) {
-                setForm((prev) => ({ ...prev, images: [...prev.images, data.url] }));
+                setForm((prev) => ({ ...prev, images: [...prev.images, { url: data.url }] }));
             }
         } catch { alert("Dosya yüklenemedi"); }
         setUploading(false);
@@ -113,7 +115,7 @@ export default function EditProduct() {
             });
             const data = await res.json();
             if (res.ok && data.url) {
-                setForm((prev) => ({ ...prev, images: [...prev.images, data.url] }));
+                setForm((prev) => ({ ...prev, images: [...prev.images, { url: data.url }] }));
                 setAiPrompt("");
             } else {
                 setAiError(data.error || "AI görsel oluşturulamadı");
@@ -122,8 +124,21 @@ export default function EditProduct() {
         setAiGenerating(false);
     };
 
-    const removeImage = (url: string) => {
-        setForm((prev) => ({ ...prev, images: prev.images.filter((i) => i !== url) }));
+    const removeImage = (indexToRemove: number) => {
+        setForm((prev) => ({ ...prev, images: prev.images.filter((_, i) => i !== indexToRemove) }));
+    };
+
+    const updateImageColor = (index: number, color: string) => {
+        setForm(prev => {
+            const newImages = [...prev.images];
+            const img = newImages[index];
+            if (typeof img === 'string') {
+                newImages[index] = { url: img, color: color || undefined };
+            } else {
+                newImages[index] = { ...img, color: color || undefined };
+            }
+            return { ...prev, images: newImages };
+        });
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -199,16 +214,34 @@ export default function EditProduct() {
                     <label className="block font-mono text-[0.65rem] tracking-[0.15em] uppercase text-[#D4C5A9]/60 mb-4">Ürün Görselleri</label>
 
                     {form.images.length > 0 && (
-                        <div className="grid grid-cols-3 gap-3 mb-4">
-                            {form.images.map((url) => (
-                                <div key={url} className="relative group aspect-square bg-white/5 border border-[#D4C5A9]/10 overflow-hidden">
-                                    <img src={url} alt="" className="w-full h-full object-cover" />
-                                    <button type="button" onClick={() => removeImage(url)}
-                                        className="absolute top-1 right-1 bg-black/60 text-white p-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">
-                                        <X size={14} />
-                                    </button>
-                                </div>
-                            ))}
+                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-4">
+                            {form.images.map((img, index) => {
+                                const url = typeof img === 'string' ? img : img.url;
+                                const color = typeof img === 'string' ? undefined : img.color;
+                                return (
+                                    <div key={index} className="relative group bg-white/5 border border-[#D4C5A9]/10 p-2 flex flex-col gap-2">
+                                        <div className="relative aspect-square overflow-hidden border border-[#D4C5A9]/10">
+                                            <img src={url} alt="" className="w-full h-full object-cover" />
+                                            <button type="button" onClick={() => removeImage(index)}
+                                                className="absolute top-1 right-1 bg-black/60 text-white p-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                                                <X size={14} />
+                                            </button>
+                                        </div>
+                                        {form.colors.length > 0 && (
+                                            <select
+                                                value={color || ""}
+                                                onChange={(e) => updateImageColor(index, e.target.value)}
+                                                className="w-full bg-[#0f1923] border border-[#D4C5A9]/20 px-2 py-1.5 text-[0.7rem] text-[#D4C5A9] focus:outline-none focus:border-[#B5622C] transition-colors"
+                                            >
+                                                <option value="">Genel Görsel</option>
+                                                {form.colors.map(c => (
+                                                    <option key={c} value={c}>{c}</option>
+                                                ))}
+                                            </select>
+                                        )}
+                                    </div>
+                                );
+                            })}
                         </div>
                     )}
 
@@ -285,18 +318,29 @@ export default function EditProduct() {
                 <div>
                     <label className="block font-mono text-[0.65rem] tracking-[0.15em] uppercase text-[#D4C5A9]/60 mb-2">Renk Seçenekleri</label>
                     <div className="flex flex-wrap gap-2 mb-3">
-                        {form.colors.map((c) => (
-                            <div key={c} className="flex items-center gap-1.5 bg-white/5 border border-[#D4C5A9]/10 px-2 py-1 rounded">
-                                <div className="w-5 h-5 rounded-full border border-[#D4C5A9]/20" style={{ background: c }} />
-                                <span className="font-mono text-[0.6rem] text-[#D4C5A9]/60">{c}</span>
-                                <button type="button" onClick={() => removeColor(c)} className="text-red-400/50 hover:text-red-400"><X size={12} /></button>
-                            </div>
-                        ))}
+                        {form.colors.map((c) => {
+                            const colorObj = PRODUCT_COLORS.find(pc => pc.name === c);
+                            const hex = colorObj ? colorObj.hex : c;
+                            return (
+                                <div key={c} className="flex items-center gap-1.5 bg-white/5 border border-[#D4C5A9]/10 px-2 py-1 rounded">
+                                    <div className="w-5 h-5 rounded-full border border-[#D4C5A9]/20" style={{ background: hex }} />
+                                    <span className="font-mono text-[0.6rem] text-[#D4C5A9]/60">{c}</span>
+                                    <button type="button" onClick={() => removeColor(c)} className="text-red-400/50 hover:text-red-400"><X size={12} /></button>
+                                </div>
+                            );
+                        })}
                     </div>
                     <div className="flex gap-2">
-                        <input type="color" value={newColor} onChange={(e) => setNewColor(e.target.value)} className="w-10 h-10 bg-transparent border border-[#D4C5A9]/20 cursor-pointer" />
-                        <input type="text" value={newColor} onChange={(e) => setNewColor(e.target.value)}
-                            className="flex-1 bg-white/5 border border-[#D4C5A9]/20 px-4 py-2 text-[0.8rem] text-[#D4C5A9] font-mono focus:outline-none focus:border-[#B5622C] transition-colors" />
+                        <select
+                            value={newColor}
+                            onChange={(e) => setNewColor(e.target.value)}
+                            className="flex-1 bg-white/5 border border-[#D4C5A9]/20 px-4 py-2 text-[0.8rem] text-[#D4C5A9] font-mono focus:outline-none focus:border-[#B5622C] transition-colors"
+                        >
+                            <option value="">Renk Seçin</option>
+                            {PRODUCT_COLORS.map((c) => (
+                                <option key={c.name} value={c.name}>{c.name}</option>
+                            ))}
+                        </select>
                         <button type="button" onClick={addColor} className="px-4 py-2 bg-[#B5622C]/20 text-[#B5622C] text-[0.75rem] hover:bg-[#B5622C]/30 transition-colors flex items-center gap-1">
                             <Plus size={14} /> Ekle
                         </button>

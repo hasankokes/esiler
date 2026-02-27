@@ -2,8 +2,22 @@
 
 import { motion } from "framer-motion";
 import { Product } from "@/types/product";
+import { PRODUCT_COLORS } from "@/lib/colors";
+import { useState } from "react";
 
 export default function ProductCard({ product, onClick }: { product: Product, onClick: () => void }) {
+    const [hoveredColor, setHoveredColor] = useState<string | null>(null);
+
+    const getHex = (colorName: string) => PRODUCT_COLORS.find(c => c.name === colorName)?.hex || colorName;
+    const color0 = getHex(product.colors[0] || '#F5F0E8');
+    const color1 = getHex(product.colors[1] || '#1C2B3A');
+
+    const displayImage = hoveredColor
+        ? product.images?.find(img => typeof img !== 'string' && img.color === hoveredColor) || product.images?.[0]
+        : product.images?.[0];
+
+    const displayImageUrl = typeof displayImage === 'string' ? displayImage : displayImage?.url;
+
     return (
         <motion.div
             variants={{
@@ -16,19 +30,19 @@ export default function ProductCard({ product, onClick }: { product: Product, on
             <div className="bg-dark aspect-[3/4] relative overflow-hidden mb-5">
                 <div
                     className="w-full h-full flex items-center justify-center transition-transform duration-500 ease-out group-hover:scale-105"
-                    style={{ background: `linear-gradient(135deg, ${product.colors[1] || '#1C2B3A'}22, ${product.colors[0] || '#F5F0E8'})` }}
+                    style={{ background: `linear-gradient(135deg, ${color1}22, ${color0})` }}
                 >
-                    {product.images?.[0] ? (
+                    {displayImageUrl ? (
                         <img
-                            src={product.images[0]}
+                            src={displayImageUrl}
                             alt={product.name}
-                            className="w-full h-full object-cover"
+                            className="w-full h-full object-cover transition-opacity duration-300"
                         />
                     ) : (
                         <div className="text-center p-8">
                             <div
                                 className="font-cormorant text-xl opacity-70 tracking-[0.05em]"
-                                style={{ color: product.colors[1] || '#1C2B3A' }}
+                                style={{ color: color1 }}
                             >
                                 {product.catLabel}
                             </div>
@@ -55,8 +69,10 @@ export default function ProductCard({ product, onClick }: { product: Product, on
                     <div
                         key={i}
                         className="w-3.5 h-3.5 rounded-full border-[1.5px] border-black/10 hover:scale-125 transition-transform cursor-pointer"
-                        style={{ background: c }}
+                        style={{ background: getHex(c) }}
                         title={c}
+                        onMouseEnter={() => setHoveredColor(c)}
+                        onMouseLeave={() => setHoveredColor(null)}
                     />
                 ))}
                 {product.colors.length > 6 && (
