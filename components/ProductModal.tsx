@@ -102,7 +102,7 @@ export default function ProductModal({ product, onClose }: { product: Product | 
                                 <span className="block font-mono text-[0.7rem] tracking-[0.12em] uppercase text-light-text mb-2">
                                     Ürün Açıklaması
                                 </span>
-                                <p className="text-[0.9rem] text-dark/70 leading-relaxed font-light">
+                                <p className="text-[0.9rem] text-dark/70 leading-relaxed font-light whitespace-pre-wrap">
                                     {product.description}
                                 </p>
                             </div>
