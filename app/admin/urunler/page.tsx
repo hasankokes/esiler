@@ -18,6 +18,7 @@ type AdminProduct = {
     minOrder?: string;
     images?: ProductImage[];
     status?: string;
+    description?: string;
 };
 
 export default function AdminProducts() {
@@ -155,7 +156,7 @@ export default function AdminProducts() {
                                                 <span className="text-[0.85rem] text-[#D4C5A9]">{p.name}</span>
                                                 <br />
                                                 <span className="font-mono text-[0.6rem] text-[#D4C5A9]/30">
-                                                    {p.fabric} · {p.size}
+                                                    {p.fabric} {p.gram ? `· ${p.gram}` : ""} · {p.size}
                                                 </span>
                                             </div>
                                         </div>

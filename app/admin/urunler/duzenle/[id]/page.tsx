@@ -30,6 +30,7 @@ export default function EditProduct() {
         colors: [] as string[],
         images: [] as ProductImage[],
         status: "active",
+        description: "",
     });
     const [newColor, setNewColor] = useState("");
     const [uploading, setUploading] = useState(false);
@@ -174,6 +175,17 @@ export default function EditProduct() {
                     <input type="text" value={form.name} onChange={(e) => setForm((prev) => ({ ...prev, name: e.target.value }))}
                         className="w-full bg-white/5 border border-[#D4C5A9]/20 px-4 py-3 text-[0.9rem] text-[#D4C5A9] focus:outline-none focus:border-[#B5622C] transition-colors" required />
                 </div>
+                
+                {/* Description */}
+                <div>
+                    <label className="block font-mono text-[0.65rem] tracking-[0.15em] uppercase text-[#D4C5A9]/60 mb-2">Ürün Açıklaması</label>
+                    <textarea
+                        value={form.description || ""}
+                        onChange={(e) => setForm((prev) => ({ ...prev, description: e.target.value }))}
+                        className="w-full bg-white/5 border border-[#D4C5A9]/20 px-4 py-3 text-[0.9rem] text-[#D4C5A9] focus:outline-none focus:border-[#B5622C] transition-colors min-h-[120px] resize-y"
+                        placeholder="Ürün hakkında detaylı bilgi girin..."
+                    />
+                </div>
 
                 <div>
                     <label className="block font-mono text-[0.65rem] tracking-[0.15em] uppercase text-[#D4C5A9]/60 mb-2">Kategori *</label>
@@ -185,9 +197,9 @@ export default function EditProduct() {
 
                 <div className="grid grid-cols-2 gap-4">
                     <div>
-                        <label className="block font-mono text-[0.65rem] tracking-[0.15em] uppercase text-[#D4C5A9]/60 mb-2">Kumaş *</label>
+                        <label className="block font-mono text-[0.65rem] tracking-[0.15em] uppercase text-[#D4C5A9]/60 mb-2">Kumaş</label>
                         <input type="text" value={form.fabric} onChange={(e) => setForm((prev) => ({ ...prev, fabric: e.target.value }))}
-                            className="w-full bg-white/5 border border-[#D4C5A9]/20 px-4 py-3 text-[0.9rem] text-[#D4C5A9] focus:outline-none focus:border-[#B5622C] transition-colors" required />
+                            className="w-full bg-white/5 border border-[#D4C5A9]/20 px-4 py-3 text-[0.9rem] text-[#D4C5A9] focus:outline-none focus:border-[#B5622C] transition-colors" />
                     </div>
                     <div>
                         <label className="block font-mono text-[0.65rem] tracking-[0.15em] uppercase text-[#D4C5A9]/60 mb-2">Gramaj</label>

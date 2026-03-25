@@ -25,6 +25,7 @@ export default function AddProduct() {
         colors: [] as string[],
         images: [] as ProductImage[],
         status: "active",
+        description: "",
     });
     const [newColor, setNewColor] = useState("");
     const [uploading, setUploading] = useState(false);
@@ -177,6 +178,19 @@ export default function AddProduct() {
                         required
                     />
                 </div>
+                
+                {/* Description */}
+                <div>
+                    <label className="block font-mono text-[0.65rem] tracking-[0.15em] uppercase text-[#D4C5A9]/60 mb-2">
+                        Ürün Açıklaması
+                    </label>
+                    <textarea
+                        value={form.description}
+                        onChange={(e) => setForm((prev) => ({ ...prev, description: e.target.value }))}
+                        className="w-full bg-white/5 border border-[#D4C5A9]/20 px-4 py-3 text-[0.9rem] text-[#D4C5A9] placeholder-[#D4C5A9]/20 focus:outline-none focus:border-[#B5622C] transition-colors min-h-[120px] resize-y"
+                        placeholder="Ürün hakkında detaylı bilgi girin..."
+                    />
+                </div>
 
                 {/* Category */}
                 <div>
@@ -198,7 +212,7 @@ export default function AddProduct() {
                 <div className="grid grid-cols-2 gap-4">
                     <div>
                         <label className="block font-mono text-[0.65rem] tracking-[0.15em] uppercase text-[#D4C5A9]/60 mb-2">
-                            Kumaş *
+                            Kumaş
                         </label>
                         <input
                             type="text"
@@ -206,7 +220,6 @@ export default function AddProduct() {
                             onChange={(e) => setForm((prev) => ({ ...prev, fabric: e.target.value }))}
                             className="w-full bg-white/5 border border-[#D4C5A9]/20 px-4 py-3 text-[0.9rem] text-[#D4C5A9] placeholder-[#D4C5A9]/20 focus:outline-none focus:border-[#B5622C] transition-colors"
                             placeholder="%100 Penye Pamuk"
-                            required
                         />
                     </div>
                     <div>

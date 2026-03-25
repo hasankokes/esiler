@@ -43,25 +43,38 @@ export async function POST(req: NextRequest) {
             parts[0].text += " Use the provided image of the clothing item as a precise reference for what the model should be wearing. The generated image MUST feature this exact clothing item.";
         }
 
-        // Call Gemini API for image generation
-        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${settings.geminiApiKey}`;
+        // Use the Imagen 3 endpoint for image generation
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-001:predict?key=${settings.geminiApiKey}`;
+
+        const payload = {
+            instances: [{ prompt: parts[0].text }],
+            parameters: { sampleCount: 1 }
+        };
 
         const response = await fetch(apiUrl, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                contents: [{ parts }],
-                generationConfig: {
-                    responseModalities: ["TEXT", "IMAGE"],
-                },
-            }),
+            body: JSON.stringify(payload),
         });
 
         if (!response.ok) {
             const errorData = await response.text();
             console.error("Gemini API error:", errorData);
+
+            require('fs').writeFileSync('/tmp/gemini-err.txt', errorData);
+
+            let errorMessage = "AI görsel oluşturulamadı. API anahtarınızı kontrol edin.";
+
+            if (errorData.includes("paid plans")) {
+                errorMessage = "Görsel oluşturma (Imagen) özelliği yalnızca ücretli Gemini API planlarında kullanılabilir. Lütfen Google API konsolundan hesabınızı yükseltin.";
+            } else if (errorData.includes("API key not valid")) {
+                errorMessage = "API anahtarı geçersiz. Lütfen ayarlar sayfasından kontrol edin.";
+            } else if (errorData.includes("not found")) {
+                errorMessage = "Görsel oluşturma modeli bulunamadı. Lütfen ücretli bir API planı kullanın.";
+            }
+
             return NextResponse.json(
-                { error: "AI görsel oluşturulamadı. API anahtarınızı kontrol edin." },
+                { error: errorMessage },
                 { status: 500 }
             );
         }
@@ -69,33 +82,30 @@ export async function POST(req: NextRequest) {
         const data = await response.json();
 
         // Extract image from response
-        const candidates = data.candidates;
-        if (!candidates || candidates.length === 0) {
+        const predictions = data.predictions;
+        if (!predictions || predictions.length === 0) {
             return NextResponse.json(
                 { error: "AI görsel üretemedi. Farklı bir açıklama deneyin." },
                 { status: 500 }
             );
         }
 
-        const responseParts = candidates[0].content?.parts || [];
-        const imagePart = responseParts.find(
-            (p: { inlineData?: { mimeType: string; data: string } }) => p.inlineData
-        );
+        const imagePart = predictions[0];
 
-        if (!imagePart || !imagePart.inlineData) {
+        if (!imagePart || !imagePart.bytesBase64Encoded) {
             return NextResponse.json(
                 { error: "API görsel döndürmedi. Farklı bir açıklama deneyin." },
                 { status: 500 }
             );
         }
 
-        const ext = imagePart.inlineData.mimeType?.includes("png") ? ".png" : ".jpg";
+        const ext = imagePart.mimeType?.includes("png") ? ".png" : ".jpg";
         const filename = `ai-${Date.now()}${ext}`;
 
-        const imageBuffer = Buffer.from(imagePart.inlineData.data, "base64");
+        const imageBuffer = Buffer.from(imagePart.bytesBase64Encoded, "base64");
 
         const { error: uploadError } = await supabase.storage.from("images").upload(filename, imageBuffer, {
-            contentType: imagePart.inlineData.mimeType || "image/jpeg",
+            contentType: imagePart.mimeType || "image/jpeg",
             upsert: false
         });
 

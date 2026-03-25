@@ -78,12 +78,16 @@ export default function ProductModal({ product, onClose }: { product: Product | 
                         </h2>
 
                         <div className="space-y-2 mb-6">
-                            <div className="flex justify-between pb-2 border-b border-border text-[0.85rem] text-light-text">
-                                <span>Kumaş</span><strong className="text-dark font-medium">{product.fabric}</strong>
-                            </div>
-                            <div className="flex justify-between pb-2 border-b border-border text-[0.85rem] text-light-text">
-                                <span>Gramaj</span><strong className="text-dark font-medium">{product.gram}</strong>
-                            </div>
+                            {product.fabric && (
+                                <div className="flex justify-between pb-2 border-b border-border text-[0.85rem] text-light-text">
+                                    <span>Kumaş</span><strong className="text-dark font-medium">{product.fabric}</strong>
+                                </div>
+                            )}
+                            {product.gram && (
+                                <div className="flex justify-between pb-2 border-b border-border text-[0.85rem] text-light-text">
+                                    <span>Gramaj</span><strong className="text-dark font-medium">{product.gram}</strong>
+                                </div>
+                            )}
                             <div className="flex justify-between pb-2 border-b border-border text-[0.85rem] text-light-text">
                                 <span>Beden Aralığı</span><strong className="text-dark font-medium">{product.size}</strong>
                             </div>
@@ -91,6 +95,17 @@ export default function ProductModal({ product, onClose }: { product: Product | 
                                 <span>Minimum Sipariş</span><strong className="text-dark font-medium">{product.minOrder || "1 Düzine (12 Adet)"}</strong>
                             </div>
                         </div>
+
+                        {product.description && (
+                            <div className="mb-6">
+                                <span className="block font-mono text-[0.7rem] tracking-[0.12em] uppercase text-light-text mb-2">
+                                    Ürün Açıklaması
+                                </span>
+                                <p className="text-[0.9rem] text-dark/70 leading-relaxed font-light">
+                                    {product.description}
+                                </p>
+                            </div>
+                        )}
 
                         <div className="my-6">
                             <span className="block font-mono text-[0.7rem] tracking-[0.12em] uppercase text-light-text mb-3">

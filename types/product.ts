@@ -5,11 +5,12 @@ export type Product = {
     name: string;
     cat: string;
     catLabel: string;
-    fabric: string;
+    fabric?: string;
     gram: string;
     size: string;
     colors: string[];
     images?: ProductImage[];
     status?: string;
     minOrder?: string;
+    description?: string;
 };
