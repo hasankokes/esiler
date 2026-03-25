@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
+import { supabase } from "@/lib/supabase";
+import fs from "fs";
 
 export async function POST(req: NextRequest) {
     const session = req.cookies.get("admin_session");
@@ -10,7 +12,6 @@ export async function POST(req: NextRequest) {
         const { prompt, referenceImage } = await req.json();
 
         // Read API key from settings
-        const { supabase } = await import("@/lib/supabase");
         const { data: settingsRow } = await supabase.from('settings').select('data').eq('id', 'site_settings').single();
         const settings = settingsRow?.data || {};
 
@@ -61,7 +62,7 @@ export async function POST(req: NextRequest) {
             const errorData = await response.text();
             console.error("Gemini API error:", errorData);
 
-            require('fs').writeFileSync('/tmp/gemini-err.txt', errorData);
+            fs.writeFileSync('/tmp/gemini-err.txt', errorData);
 
             let errorMessage = "AI görsel oluşturulamadı. API anahtarınızı kontrol edin.";
 
