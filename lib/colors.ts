@@ -38,5 +38,7 @@ export const PRODUCT_COLORS = [
     { name: "Gri", hex: "#808080" },
     { name: "Açık Mavi", hex: "#ADD8E6" },
     { name: "Açık Yeşil", hex: "#90EE90" },
-    { name: "Açık Pembe", hex: "#FFB6C1" }
+    { name: "Açık Pembe", hex: "#FFB6C1" },
+    { name: "Mürdüm", hex: "#6B3E51" },
+    { name: "Violet", hex: "#8F00FF" }
 ];
