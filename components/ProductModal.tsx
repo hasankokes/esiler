@@ -56,6 +56,7 @@ export default function ProductModal({ product, onClose }: { product: Product | 
                             <X size={20} />
                         </button>
                         {displayImageUrl ? (
+                            /* eslint-disable-next-line @next/next/no-img-element */
                             <img
                                 src={displayImageUrl}
                                 alt={product.name}

@@ -33,6 +33,7 @@ export default function ProductCard({ product, onClick }: { product: Product, on
                     style={{ background: `linear-gradient(135deg, ${color1}22, ${color0})` }}
                 >
                     {displayImageUrl ? (
+                        /* eslint-disable-next-line @next/next/no-img-element */
                         <img
                             src={displayImageUrl}
                             alt={product.name}

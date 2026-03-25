@@ -141,6 +141,7 @@ export default function AdminProducts() {
                                         <div className="flex items-center gap-3">
                                             {p.images && p.images.length > 0 ? (
                                                 <div className="w-10 h-10 bg-white/5 border border-[#D4C5A9]/10 overflow-hidden flex-shrink-0">
+                                                    {/* eslint-disable-next-line @next/next/no-img-element */}
                                                     <img
                                                         src={typeof p.images[0] === 'string' ? p.images[0] : p.images[0].url}
                                                         alt=""

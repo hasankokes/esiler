@@ -233,6 +233,7 @@ export default function EditProduct() {
                                 return (
                                     <div key={index} className="relative group bg-white/5 border border-[#D4C5A9]/10 p-2 flex flex-col gap-2">
                                         <div className="relative aspect-square overflow-hidden border border-[#D4C5A9]/10">
+                                            {/* eslint-disable-next-line @next/next/no-img-element */}
                                             <img src={url} alt="" className="w-full h-full object-cover" />
                                             <button type="button" onClick={() => removeImage(index)}
                                                 className="absolute top-1 right-1 bg-black/60 text-white p-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">
@@ -293,6 +294,7 @@ export default function EditProduct() {
                             {aiRefImage ? (
                                 <div className="flex items-center gap-3">
                                     <div className="w-12 h-12 border border-[#D4C5A9]/20 overflow-hidden bg-white/5">
+                                        {/* eslint-disable-next-line @next/next/no-img-element */}
                                         <img src={`data:${aiRefImage.mimeType};base64,${aiRefImage.data}`} alt="Reference" className="w-full h-full object-cover" />
                                     </div>
                                     <button
