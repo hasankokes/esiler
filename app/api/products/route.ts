@@ -2,11 +2,46 @@ import { NextRequest, NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
 
 export async function GET() {
-    const { data: products, error } = await supabase.from("products").select("*").order("id", { ascending: true });
+    const { data: products, error } = await supabase
+        .from("products")
+        .select("*")
+        .order("sort_order", { ascending: true })
+        .order("id", { ascending: true });
     if (error) {
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
     return NextResponse.json(products);
+}
+
+export async function PATCH(req: NextRequest) {
+    const session = req.cookies.get("admin_session");
+    if (session?.value !== "authenticated") {
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const body = await req.json();
+    const { products } = body;
+
+    if (!Array.isArray(products)) {
+        return NextResponse.json({ error: "Invalid products data" }, { status: 400 });
+    }
+
+    // Update each product's sort_order
+    const updates = products.map((p: { id: number; sort_order: number }) =>
+        supabase.from("products").update({ sort_order: p.sort_order }).eq("id", p.id)
+    );
+
+    const results = await Promise.all(updates);
+    const errors = results.filter((r) => r.error);
+
+    if (errors.length > 0) {
+        return NextResponse.json(
+            { error: "Some updates failed", details: errors.map((e) => e.error?.message) },
+            { status: 500 }
+        );
+    }
+
+    return NextResponse.json({ success: true });
 }
 
 export async function POST(req: NextRequest) {

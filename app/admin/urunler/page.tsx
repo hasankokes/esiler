@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Plus, Edit, Trash2, Eye, EyeOff, Package } from "lucide-react";
+import { Plus, Edit, Trash2, Eye, EyeOff, Package, ArrowUp, ArrowDown, Save } from "lucide-react";
 import { PRODUCT_COLORS } from "@/lib/colors";
 import { ProductImage } from "@/types/product";
 
@@ -19,11 +19,15 @@ type AdminProduct = {
     images?: ProductImage[];
     status?: string;
     description?: string;
+    sort_order?: number;
+    is_gun_cicegi?: boolean;
 };
 
 export default function AdminProducts() {
     const [products, setProducts] = useState<AdminProduct[]>([]);
     const [loading, setLoading] = useState(true);
+    const [isOrderChanged, setIsOrderChanged] = useState(false);
+    const [isSavingOrder, setIsSavingOrder] = useState(false);
 
     const fetchProducts = async () => {
         const res = await fetch("/api/products");
@@ -61,6 +65,48 @@ export default function AdminProducts() {
         }
     };
 
+    const handleMoveUp = (index: number) => {
+        if (index === 0) return;
+        const newProducts = [...products];
+        const temp = newProducts[index];
+        newProducts[index] = newProducts[index - 1];
+        newProducts[index - 1] = temp;
+        setProducts(newProducts);
+        setIsOrderChanged(true);
+    };
+
+    const handleMoveDown = (index: number) => {
+        if (index === products.length - 1) return;
+        const newProducts = [...products];
+        const temp = newProducts[index];
+        newProducts[index] = newProducts[index + 1];
+        newProducts[index + 1] = temp;
+        setProducts(newProducts);
+        setIsOrderChanged(true);
+    };
+
+    const saveOrder = async () => {
+        setIsSavingOrder(true);
+        const productsWithOrder = products.map((p, index) => ({
+            id: p.id,
+            sort_order: index,
+        }));
+
+        const res = await fetch("/api/products", {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ products: productsWithOrder }),
+        });
+
+        if (res.ok) {
+            setIsOrderChanged(false);
+            alert("Sıralama başarıyla kaydedildi.");
+        } else {
+            alert("Sıralama kaydedilirken bir hata oluştu.");
+        }
+        setIsSavingOrder(false);
+    };
+
     const catLabels: Record<string, string> = {
         penye: "Penye",
         buyuk: "Büyük Beden",
@@ -87,13 +133,25 @@ export default function AdminProducts() {
                         {products.length} ürün kayıtlı
                     </p>
                 </div>
-                <Link
-                    href="/admin/urunler/ekle"
-                    className="flex items-center gap-2 bg-[#B5622C] text-white px-5 py-2.5 text-[0.75rem] tracking-[0.1em] uppercase hover:bg-[#9a5325] transition-colors"
-                >
-                    <Plus size={16} />
-                    Yeni Ürün
-                </Link>
+                <div className="flex gap-3">
+                    {isOrderChanged && (
+                        <button
+                            onClick={saveOrder}
+                            disabled={isSavingOrder}
+                            className="flex items-center gap-2 bg-[#D4C5A9]/10 text-[#D4C5A9] border border-[#D4C5A9]/20 px-5 py-2.5 text-[0.75rem] tracking-[0.1em] uppercase hover:bg-[#D4C5A9]/20 transition-colors disabled:opacity-50"
+                        >
+                            {isSavingOrder ? <span className="animate-spin inline-block">◌</span> : <Save size={16} />}
+                            Sıralamayı Kaydet
+                        </button>
+                    )}
+                    <Link
+                        href="/admin/urunler/ekle"
+                        className="flex items-center gap-2 bg-[#B5622C] text-white px-5 py-2.5 text-[0.75rem] tracking-[0.1em] uppercase hover:bg-[#9a5325] transition-colors"
+                    >
+                        <Plus size={16} />
+                        Yeni Ürün
+                    </Link>
+                </div>
             </div>
 
             {products.length === 0 ? (
@@ -115,6 +173,9 @@ export default function AdminProducts() {
                         <thead>
                             <tr className="border-b border-[#D4C5A9]/10">
                                 <th className="text-left font-mono text-[0.65rem] tracking-[0.12em] uppercase text-[#D4C5A9]/40 pb-3 pr-4">
+                                    Sıra
+                                </th>
+                                <th className="text-left font-mono text-[0.65rem] tracking-[0.12em] uppercase text-[#D4C5A9]/40 pb-3 pr-4">
                                     Ürün
                                 </th>
                                 <th className="text-left font-mono text-[0.65rem] tracking-[0.12em] uppercase text-[#D4C5A9]/40 pb-3 pr-4">
@@ -132,11 +193,31 @@ export default function AdminProducts() {
                             </tr>
                         </thead>
                         <tbody>
-                            {products.map((p) => (
+                            {products.map((p, index) => (
                                 <tr
                                     key={p.id}
                                     className="border-b border-[#D4C5A9]/5 hover:bg-white/[0.02] transition-colors"
                                 >
+                                    <td className="py-4 pr-4">
+                                        <div className="flex flex-col gap-1 items-center justify-center w-8">
+                                            <button
+                                                onClick={() => handleMoveUp(index)}
+                                                disabled={index === 0}
+                                                className="p-1 text-[#D4C5A9]/40 hover:text-[#D4C5A9] disabled:opacity-10 transition-colors"
+                                                title="Yukarı Taşı"
+                                            >
+                                                <ArrowUp size={14} />
+                                            </button>
+                                            <button
+                                                onClick={() => handleMoveDown(index)}
+                                                disabled={index === products.length - 1}
+                                                className="p-1 text-[#D4C5A9]/40 hover:text-[#D4C5A9] disabled:opacity-10 transition-colors"
+                                                title="Aşağı Taşı"
+                                            >
+                                                <ArrowDown size={14} />
+                                            </button>
+                                        </div>
+                                    </td>
                                     <td className="py-4 pr-4">
                                         <div className="flex items-center gap-3">
                                             {p.images && p.images.length > 0 ? (
@@ -154,7 +235,17 @@ export default function AdminProducts() {
                                                 </div>
                                             )}
                                             <div>
-                                                <span className="text-[0.85rem] text-[#D4C5A9]">{p.name}</span>
+                                                <span className="text-[0.85rem] text-[#D4C5A9] flex items-center gap-2">
+                                                    {p.name}
+                                                    {p.is_gun_cicegi && (
+                                                        <span className="text-[#B5622C]" title="Gün Çiçeği Koleksiyonu">
+                                                            <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
+                                                                <path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm0 8c-1.65 0-3-1.35-3-3s1.35-3 3-3 3 1.35 3 3-1.35 3-3 3z" />
+                                                                <path d="M12 2c-.55 0-1 .45-1 1v2c0 .55.45 1 1 1s1-.45 1-1V3c0-.55-.45-1-1-1zm0 16c-.55 0-1 .45-1 1v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1zm10-7h-2c-.55 0-1 .45-1 1s.45 1 1 1h2c.55 0 1-.45 1-1s-.45-1-1-1zM6 12c0-.55-.45-1-1-1H3c-.55 0-1 .45-1 1s.45 1 1 1h2c.55 0 1-.45 1-1zm13.07-5.07c-.39-.39-1.02-.39-1.41 0l-1.42 1.42c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0l1.42-1.42c.39-.38.39-1.02 0-1.41zM7.76 16.24c-.39-.39-1.02-.39-1.41 0l-1.42 1.42c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0l1.42-1.42c.39-.39.39-1.02 0-1.41zm11.31 1.42-1.42-1.42c-.39-.39-1.02-.39-1.41 0-.39.39-.39 1.02 0 1.41l1.42 1.42c.39.39 1.02.39 1.41 0 .39-.39.39-1.02 0-1.41zM7.76 7.76c-.39-.39-1.02-.39-1.41 0L4.93 9.18c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0l1.42-1.42c.39-.39.39-1.02 0-1.41z" />
+                                                            </svg>
+                                                        </span>
+                                                    )}
+                                                </span>
                                                 <br />
                                                 <span className="font-mono text-[0.6rem] text-[#D4C5A9]/30">
                                                     {p.fabric} {p.gram ? `· ${p.gram}` : ""} · {p.size}
@@ -228,3 +319,4 @@ export default function AdminProducts() {
         </div>
     );
 }
+

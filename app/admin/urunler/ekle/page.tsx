@@ -26,6 +26,7 @@ export default function AddProduct() {
         images: [] as ProductImage[],
         status: "active",
         description: "",
+        is_gun_cicegi: false,
     });
     const [newColor, setNewColor] = useState("");
     const [uploading, setUploading] = useState(false);
@@ -453,6 +454,23 @@ export default function AddProduct() {
                             Taslak
                         </button>
                     </div>
+                </div>
+
+                {/* Gün Çiçeği Koleksiyonu Toggle */}
+                <div className="border border-accent/20 bg-accent/5 p-4 flex items-center justify-between">
+                    <div>
+                        <label className="block font-mono text-[0.65rem] tracking-[0.15em] uppercase text-accent mb-1">
+                            Gün Çiçeği Koleksiyonu
+                        </label>
+                        <p className="text-[0.7rem] text-[#D4C5A9]/40 font-light">Bu ürün özel koleksiyonda sergilensin mi?</p>
+                    </div>
+                    <button
+                        type="button"
+                        onClick={() => setForm(prev => ({ ...prev, is_gun_cicegi: !prev.is_gun_cicegi }))}
+                        className={`w-12 h-6 rounded-full transition-colors relative ${form.is_gun_cicegi ? 'bg-[#B5622C]' : 'bg-white/10'}`}
+                    >
+                        <div className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-all ${form.is_gun_cicegi ? 'left-7' : 'left-1'}`} />
+                    </button>
                 </div>
 
                 {/* Submit */}

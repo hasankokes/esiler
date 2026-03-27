@@ -13,4 +13,6 @@ export type Product = {
     status?: string;
     minOrder?: string;
     description?: string;
+    sort_order?: number;
+    is_gun_cicegi?: boolean;
 };

@@ -47,7 +47,9 @@ export default function Home() {
 
   const filteredProducts = activeFilter === "all"
     ? apiProducts
-    : apiProducts.filter(p => p.cat === activeFilter);
+    : activeFilter === "gun-cicegi"
+      ? apiProducts.filter(p => p.is_gun_cicegi)
+      : apiProducts.filter(p => p.cat === activeFilter);
 
   if (!mounted) return null; // Avoid hydration mismatch
 
