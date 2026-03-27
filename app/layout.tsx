@@ -24,6 +24,9 @@ const dmMono = DM_Mono({
 export const metadata: Metadata = {
   title: "Eşiler Triko — 1964'ten Beri Güven",
   description: "60 yılın güveniyle toptan triko & penye. 1964'ten beri Türk Dokusunun Sesi.",
+  verification: {
+    google: "cfR4W986dG38z2nFKAwStXL7RCUT5ElqPnPLVcXSnfY",
+  },
 };
 
 export default function RootLayout({
