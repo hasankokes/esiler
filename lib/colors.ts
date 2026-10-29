@@ -40,5 +40,13 @@ export const PRODUCT_COLORS = [
     { name: "Açık Yeşil", hex: "#90EE90" },
     { name: "Açık Pembe", hex: "#FFB6C1" },
     { name: "Mürdüm", hex: "#6B3E51" },
-    { name: "Violet", hex: "#8F00FF" }
+    { name: "Violet", hex: "#8F00FF" },
+    { name: "Kemik", hex: "#E3DAC9" },
+    { name: "Su Yeşili", hex: "#A8D8C8" },
+    { name: "Sütlü Kahve", hex: "#A67B5B" },
+    { name: "Tarçın", hex: "#A0522D" },
+    { name: "Vişne Çürüğü", hex: "#5C1A28" },
+    { name: "Buz Mavi", hex: "#D6EAF8" },
+    { name: "Bebek Mavisi", hex: "#89CFF0" },
+    { name: "Fuşya", hex: "#C2185B" }
 ];

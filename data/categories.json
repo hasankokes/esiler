@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "value": "penye",
+    "label": "Penye",
+    "description": "Anne penye bluz ve tunik modelleri"
+  },
+  {
+    "id": 2,
+    "value": "buyuk",
+    "label": "Penye Büyük Beden",
+    "description": "Büyük beden (battal boy) penye bluzlar"
+  },
+  {
+    "id": 3,
+    "value": "hirka",
+    "label": "Hırka & Yelek",
+    "description": "Triko hırka ve yelek modelleri"
+  },
+  {
+    "id": 4,
+    "value": "badi",
+    "label": "Badi",
+    "description": "Badi ve body modelleri"
+  },
+  {
+    "id": 5,
+    "value": "triko",
+    "label": "Triko Kazak",
+    "description": "Mevsimlik ve kışlık triko kazaklar"
+  }
+]

@@ -1,10 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
+import catalogCategories from "@/data/categories.json";
 
 export async function GET() {
     const { data: categories, error } = await supabase.from("categories").select("*").order("id", { ascending: true });
-    if (error) {
-        return NextResponse.json({ error: error.message }, { status: 500 });
+    // Supabase erişilemezse veya boşsa yerel kategori listesini kullan
+    if (error || !categories?.length) {
+        return NextResponse.json(catalogCategories);
     }
     return NextResponse.json(categories);
 }

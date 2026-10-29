@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { Product } from "@/types/product";
 import { PRODUCT_COLORS } from "@/lib/colors";
+import { sizedImage } from "@/lib/image";
 import { useState } from "react";
 
 export default function ProductCard({ product, onClick }: { product: Product, onClick: () => void }) {
@@ -16,7 +17,7 @@ export default function ProductCard({ product, onClick }: { product: Product, on
         ? product.images?.find(img => typeof img !== 'string' && img.color === hoveredColor) || product.images?.[0]
         : product.images?.[0];
 
-    const displayImageUrl = typeof displayImage === 'string' ? displayImage : displayImage?.url;
+    const displayImageUrl = sizedImage(typeof displayImage === 'string' ? displayImage : displayImage?.url, 620, 930);
 
     return (
         <motion.div
@@ -27,7 +28,7 @@ export default function ProductCard({ product, onClick }: { product: Product, on
             className="cursor-pointer group"
             onClick={onClick}
         >
-            <div className="bg-dark aspect-[3/4] relative overflow-hidden mb-5">
+            <div className="bg-dark aspect-[2/3] relative overflow-hidden mb-3 md:mb-5">
                 <div
                     className="w-full h-full flex items-center justify-center transition-transform duration-500 ease-out group-hover:scale-105"
                     style={{ background: `linear-gradient(135deg, ${color1}22, ${color0})` }}
@@ -53,32 +54,32 @@ export default function ProductCard({ product, onClick }: { product: Product, on
                         </div>
                     )}
                 </div>
-                <div className="absolute inset-0 bg-[#1c2b3a]/70 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-400">
+                <div className="absolute inset-0 bg-[#1c2b3a]/70 hidden md:flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-400">
                     <button className="px-7 py-3 border border-cream text-cream text-[0.7rem] tracking-[0.15em] uppercase font-sans hover:bg-cream hover:text-dark transition-colors duration-300">
                         Detay Gör
                     </button>
                 </div>
             </div>
-            <div className="font-mono text-[0.6rem] tracking-[0.18em] uppercase text-terra mb-1.5">
+            <div className="font-mono text-[0.55rem] md:text-[0.6rem] tracking-[0.18em] uppercase text-terra mb-1.5">
                 {product.catLabel}
             </div>
-            <div className="font-cormorant text-[1.3rem] text-dark mb-3">
+            <div className="font-cormorant text-[1.05rem] md:text-[1.25rem] leading-snug text-dark mb-3 line-clamp-2" title={product.name}>
                 {product.name}
             </div>
-            <div className="flex items-center gap-1.5">
-                {product.colors.slice(0, 6).map((c, i) => (
+            <div className="flex items-center gap-1.5 flex-wrap">
+                {product.colors.slice(0, 5).map((c, i) => (
                     <div
                         key={i}
-                        className="w-3.5 h-3.5 rounded-full border-[1.5px] border-black/10 hover:scale-125 transition-transform cursor-pointer"
+                        className="w-3 h-3 md:w-3.5 md:h-3.5 rounded-full border-[1.5px] border-black/10 hover:scale-125 transition-transform cursor-pointer"
                         style={{ background: getHex(c) }}
                         title={c}
                         onMouseEnter={() => setHoveredColor(c)}
                         onMouseLeave={() => setHoveredColor(null)}
                     />
                 ))}
-                {product.colors.length > 6 && (
-                    <span className="text-[0.65rem] text-light-text font-mono ml-2">
-                        +{product.colors.length - 6}
+                {product.colors.length > 5 && (
+                    <span className="text-[0.65rem] text-light-text font-mono ml-1">
+                        +{product.colors.length - 5}
                     </span>
                 )}
             </div>

@@ -2,6 +2,7 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
+import { Product } from "@/types/product";
 
 function CountUp({ target, duration = 1.5 }: { target: number; duration?: number }) {
     const ref = useRef<HTMLSpanElement>(null);
@@ -32,7 +33,9 @@ function CountUp({ target, duration = 1.5 }: { target: number; duration?: number
     return <span ref={ref}>{count}{target >= 100 ? '+' : ''}</span>;
 }
 
-export default function StatsBar() {
+export default function StatsBar({ products }: { products: Product[] }) {
+    const colorCount = new Set(products.flatMap(p => p.colors)).size;
+
     return (
         <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -51,15 +54,15 @@ export default function StatsBar() {
             </div>
             <div className="text-center">
                 <span className="font-cormorant text-4xl md:text-[2.5rem] font-light text-dark block">
-                    <CountUp target={4} duration={0.5} />
+                    <CountUp target={products.length} duration={0.8} />
                 </span>
                 <span className="text-[0.7rem] tracking-[0.15em] uppercase text-light-text font-mono">
-                    Ana Kategori
+                    Model Çeşidi
                 </span>
             </div>
             <div className="text-center">
                 <span className="font-cormorant text-4xl md:text-[2.5rem] font-light text-dark block">
-                    <CountUp target={12} duration={0.8} />
+                    <CountUp target={colorCount} duration={0.8} />
                 </span>
                 <span className="text-[0.7rem] tracking-[0.15em] uppercase text-light-text font-mono">
                     Renk Seçeneği

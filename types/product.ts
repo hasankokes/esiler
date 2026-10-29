@@ -15,4 +15,6 @@ export type Product = {
     description?: string;
     sort_order?: number;
     is_gun_cicegi?: boolean;
+    is_kis?: boolean;
+    trendyolUrl?: string;
 };

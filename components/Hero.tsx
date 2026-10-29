@@ -2,8 +2,18 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { useEffect, useRef } from "react";
 
 export default function Hero() {
+    const videoRef = useRef<HTMLVideoElement>(null);
+
+    // Hareketi azaltmayı seçen ziyaretçilerde animasyon durur, kapak karesi görünür
+    useEffect(() => {
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+            videoRef.current?.pause();
+        }
+    }, []);
+
     return (
         <section
             id="hero"
@@ -36,8 +46,8 @@ export default function Hero() {
                     transition={{ duration: 0.8, delay: 0.9 }}
                     className="text-[0.95rem] text-light-text leading-[1.8] max-w-[400px] mb-12"
                 >
-                    Penye, hırka, yelek ve badi kategorilerinde altmış yılın birikimini
-                    taşıyan koleksiyonlarımızla butiklerinize kalite ve çeşitlilik
+                    Penye, triko, hırka ve yelek koleksiyonlarımızda altmış yılın
+                    birikimini taşıyan modellerle butiklerinize kalite ve çeşitlilik
                     sunuyoruz.
                 </motion.p>
 
@@ -58,38 +68,20 @@ export default function Hero() {
                 </motion.div>
             </div>
 
-            <div className="relative bg-dark min-h-[350px] md:min-h-full overflow-hidden flex items-center justify-center">
-                {/* Fabric pattern overlay */}
-                <div className="absolute inset-0 opacity-20" style={{ backgroundImage: "repeating-linear-gradient(45deg, rgba(212,197,169,0.15) 0px, rgba(212,197,169,0.15) 1px, transparent 1px, transparent 10px)" }}></div>
-
-                <div className="font-cormorant italic text-[8rem] md:text-[16rem] font-light text-[#D4C5A9]/[0.05] absolute -bottom-8 md:-bottom-12 -right-4 md:-right-8 leading-none select-none pointer-events-none z-0">
-                    1964
-                </div>
-
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 1.2, delay: 1.3 }}
-                    className="relative z-10 w-full h-full flex flex-col items-center justify-center gap-4"
-                >
-                    <svg width="80" height="80" viewBox="0 0 80 80" fill="none" className="opacity-30">
-                        <rect x="20" y="10" width="40" height="60" rx="4" stroke="#D4C5A9" strokeWidth="1.5" />
-                        <path d="M20 30 Q40 20 60 30" stroke="#D4C5A9" strokeWidth="1.5" fill="none" />
-                        <circle cx="40" cy="55" r="8" stroke="#D4C5A9" strokeWidth="1.5" />
-                    </svg>
-                    <span className="font-cormorant text-[#D4C5A9]/50 text-[0.85rem] tracking-[0.1em]">
-                        Koleksiyon 2024–25
-                    </span>
-                    <div className="flex gap-1.5 justify-center flex-wrap mt-2">
-                        {['#F5F0E8', '#1C2B3A', '#7A8B9A', '#B5622C', '#8B6A52', '#4A5D4A', '#8B3A3A'].map((c, i) => (
-                            <div
-                                key={i}
-                                className="w-[18px] h-[18px] rounded-full border-[2px] border-white/20 cursor-pointer hover:scale-125 transition-transform"
-                                style={{ background: c }}
-                            ></div>
-                        ))}
-                    </div>
-                </motion.div>
+            <div className="relative bg-dark aspect-[4/5] md:aspect-auto md:min-h-full overflow-hidden">
+                {/* Remotion ile üretilen marka animasyonu (video/ klasörü) */}
+                <video
+                    ref={videoRef}
+                    src="/esiler-hero.mp4"
+                    poster="/esiler-hero-poster.jpg"
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    preload="auto"
+                    aria-label="Eşiler Triko: iplikten örgüye, örgüden işlemeye"
+                    className="absolute inset-0 w-full h-full object-cover"
+                />
             </div>
         </section>
     );
