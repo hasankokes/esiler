@@ -49,7 +49,9 @@ export default function Home() {
     ? apiProducts
     : activeFilter === "gun-cicegi"
       ? apiProducts.filter(p => p.is_gun_cicegi)
-      : apiProducts.filter(p => p.cat === activeFilter);
+      : activeFilter === "kis"
+        ? apiProducts.filter(p => p.is_kis)
+        : apiProducts.filter(p => p.cat === activeFilter);
 
   if (!mounted) return null; // Avoid hydration mismatch
 
@@ -59,12 +61,12 @@ export default function Home() {
 
       <Hero />
 
-      <StatsBar />
+      <StatsBar products={apiProducts} />
 
-      <Categories onCategoryClick={setActiveFilter} />
+      <Categories categories={categories} products={apiProducts} onCategoryClick={setActiveFilter} />
 
       {/* PRODUCTS SECTION */}
-      <section id="urunler" className="py-24 px-6 md:px-24">
+      <section id="urunler" className="py-24 px-4 sm:px-6 md:px-24">
         <div className="flex flex-col md:flex-row items-start md:items-end justify-between mb-16 gap-6">
           <div>
             <div className="font-mono text-[0.65rem] tracking-[0.2em] uppercase text-terra flex items-center gap-4 mb-6
@@ -109,7 +111,7 @@ export default function Home() {
             visible: { transition: { staggerChildren: 0.1 } },
             hidden: {}
           }}
-          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8"
+          className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-10 md:gap-x-8 md:gap-y-14"
         >
           {filteredProducts.map(product => (
             <ProductCard

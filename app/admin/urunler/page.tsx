@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Plus, Edit, Trash2, Eye, EyeOff, Package, ArrowUp, ArrowDown, Save } from "lucide-react";
 import { PRODUCT_COLORS } from "@/lib/colors";
+import { sizedImage } from "@/lib/image";
 import { ProductImage } from "@/types/product";
 
 type AdminProduct = {
@@ -224,7 +225,7 @@ export default function AdminProducts() {
                                                 <div className="w-10 h-10 bg-white/5 border border-[#D4C5A9]/10 overflow-hidden flex-shrink-0">
                                                     {/* eslint-disable-next-line @next/next/no-img-element */}
                                                     <img
-                                                        src={typeof p.images[0] === 'string' ? p.images[0] : p.images[0].url}
+                                                        src={sizedImage(typeof p.images[0] === 'string' ? p.images[0] : p.images[0].url, 120, 180)}
                                                         alt=""
                                                         className="w-full h-full object-cover"
                                                     />

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
+import catalog from "@/data/products.json";
 
 export async function GET() {
     const { data: products, error } = await supabase
@@ -7,8 +8,9 @@ export async function GET() {
         .select("*")
         .order("sort_order", { ascending: true })
         .order("id", { ascending: true });
-    if (error) {
-        return NextResponse.json({ error: error.message }, { status: 500 });
+    // Supabase erişilemezse veya boşsa Trendyol'dan oluşturulan kataloğu kullan
+    if (error || !products?.length) {
+        return NextResponse.json(catalog);
     }
     return NextResponse.json(products);
 }

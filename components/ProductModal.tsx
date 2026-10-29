@@ -6,6 +6,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { X } from "lucide-react";
 import { PRODUCT_COLORS } from "@/lib/colors";
+import { sizedImage } from "@/lib/image";
 
 export default function ProductModal({ product, onClose }: { product: Product | null, onClose: () => void }) {
     const [selectedColorIndex, setSelectedColorIndex] = useState(0);
@@ -17,7 +18,7 @@ export default function ProductModal({ product, onClose }: { product: Product | 
         typeof img !== 'string' && img.color === selectedColorName
     ) || product.images?.[0];
 
-    const displayImageUrl = typeof displayImage === 'string' ? displayImage : displayImage?.url;
+    const displayImageUrl = sizedImage(typeof displayImage === 'string' ? displayImage : displayImage?.url, 1200, 1800);
 
     const getHex = (colorName: string) => PRODUCT_COLORS.find(c => c.name === colorName)?.hex || colorName;
     const color0 = getHex(product.colors[0] || '#2A3A4A');
