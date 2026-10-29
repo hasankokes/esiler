@@ -10,6 +10,10 @@
   --text: #2D2D2D;
   --light-text: #7A7A7A;
   --border: #E2D9CC;
+  /* Yazı tipleri app/fonts.css içinde tanımlı */
+  --font-cormorant: "Cormorant Garamond";
+  --font-dm-sans: "DM Sans";
+  --font-dm-mono: "DM Mono";
 }
 
 html {
